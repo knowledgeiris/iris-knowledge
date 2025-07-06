@@ -18,8 +18,6 @@ export interface Capsule {
   content: string
   tags: string[]
   timestamp: number
-  type: "text" | "voice"
-  audio_url?: string | null
 }
 
 export default function HomePage() {
@@ -55,11 +53,14 @@ export default function HomePage() {
   const loadCapsules = async () => {
     try {
       setIsLoading(true)
+      console.log("开始加载胶囊...")
 
       // Check connection first
       const isConnected = await checkConnection()
+      console.log("数据库连接状态:", isConnected)
+      
       if (!isConnected) {
-        console.warn("Database connection failed, using localStorage fallback")
+        console.warn("数据库连接失败，使用localStorage回退")
         const saved = localStorage.getItem("iris-capsules")
         if (saved) {
           setCapsules(JSON.parse(saved))
@@ -67,20 +68,21 @@ export default function HomePage() {
         return
       }
 
+      console.log("从数据库获取数据...")
       const data = await capsuleOperations.getAll()
-      const formattedCapsules = data.map((item) => ({
-        id: item.id,
-        content: item.content,
-        tags: item.tags || [],
-        timestamp: item.timestamp,
-        type: item.type as "text" | "voice",
-        audio_url: item.audio_url,
+      console.log("数据库返回数据:", data)
+      
+      const formattedCapsules = data.map((item: any) => ({
+        id: item.id as string,
+        content: item.content as string,
+        tags: (item.tags || []) as string[],
+        timestamp: item.timestamp as number,
       }))
 
       setCapsules(formattedCapsules)
       localStorage.setItem("iris-capsules", JSON.stringify(formattedCapsules))
     } catch (error) {
-      console.error("Database error:", error)
+      console.error("数据库错误:", error)
       // Fallback to localStorage
       const saved = localStorage.getItem("iris-capsules")
       if (saved) {
@@ -97,24 +99,31 @@ export default function HomePage() {
       id: crypto.randomUUID(),
       timestamp: Date.now(),
     }
+    
+    console.log("新胶囊:", newCapsule)
 
     // Optimistically update UI
     setCapsules((prev) => [newCapsule, ...prev])
 
     try {
       // Try to save to database
+      console.log("检查数据库连接...")
       const isConnected = await checkConnection()
+      console.log("数据库连接状态:", isConnected)
+      
       if (isConnected) {
-        await capsuleOperations.create({
+        console.log("开始保存到数据库...")
+        const result = await capsuleOperations.create({
           content: newCapsule.content,
           tags: newCapsule.tags,
           timestamp: newCapsule.timestamp,
-          type: newCapsule.type,
-          audio_url: newCapsule.audio_url || undefined,
         })
+        console.log("数据库保存结果:", result)
+      } else {
+        console.warn("数据库未连接，只保存到本地")
       }
     } catch (error) {
-      console.error("Error saving to database:", error)
+      console.error("保存到数据库时出错:", error)
     }
 
     // Always save to localStorage as backup
@@ -151,6 +160,7 @@ export default function HomePage() {
           Undo
         </Button>
       ),
+      onClose: () => {},
     })
 
     // 4秒后永久删除（从数据库）
@@ -195,6 +205,7 @@ export default function HomePage() {
       title: "Capsule restored",
       description: "Your inspiration is back in the cosmos",
       duration: 2000,
+      onClose: () => {},
     })
   }
 

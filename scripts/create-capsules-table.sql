@@ -4,8 +4,6 @@ CREATE TABLE IF NOT EXISTS capsules (
   content TEXT NOT NULL,
   tags TEXT[] DEFAULT '{}',
   timestamp BIGINT NOT NULL,
-  type TEXT CHECK (type IN ('text', 'voice')) NOT NULL DEFAULT 'text',
-  audio_url TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -13,7 +11,6 @@ CREATE TABLE IF NOT EXISTS capsules (
 -- 创建索引以提高查询性能
 CREATE INDEX IF NOT EXISTS idx_capsules_timestamp ON capsules(timestamp DESC);
 CREATE INDEX IF NOT EXISTS idx_capsules_tags ON capsules USING GIN(tags);
-CREATE INDEX IF NOT EXISTS idx_capsules_type ON capsules(type);
 CREATE INDEX IF NOT EXISTS idx_capsules_created_at ON capsules(created_at DESC);
 
 -- 创建更新时间的触发器
@@ -38,8 +35,8 @@ CREATE POLICY "Allow all operations on capsules" ON capsules
   FOR ALL USING (true);
 
 -- 插入一些示例数据（可选）
-INSERT INTO capsules (content, tags, timestamp, type) VALUES 
-  ('Welcome to Iris Inner Cosmo! This is your first inspiration capsule.', ARRAY['welcome', 'first'], EXTRACT(EPOCH FROM NOW()) * 1000, 'text'),
-  ('Remember: Every great journey begins with a single step.', ARRAY['motivation', 'journey'], EXTRACT(EPOCH FROM NOW()) * 1000 - 3600000, 'text'),
-  ('Ideas are like stars - they shine brightest in the darkness of uncertainty.', ARRAY['creativity', 'inspiration'], EXTRACT(EPOCH FROM NOW()) * 1000 - 7200000, 'text')
+INSERT INTO capsules (content, tags, timestamp) VALUES 
+  ('Welcome to Iris Inner Cosmo! This is your first inspiration capsule.', ARRAY['welcome', 'first'], EXTRACT(EPOCH FROM NOW()) * 1000),
+  ('Remember: Every great journey begins with a single step.', ARRAY['motivation', 'journey'], EXTRACT(EPOCH FROM NOW()) * 1000 - 3600000),
+  ('Ideas are like stars - they shine brightest in the darkness of uncertainty.', ARRAY['creativity', 'inspiration'], EXTRACT(EPOCH FROM NOW()) * 1000 - 7200000)
 ON CONFLICT DO NOTHING;

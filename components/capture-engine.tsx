@@ -24,7 +24,6 @@ export default function CaptureEngine({ onAddCapsule }: CaptureEngineProps) {
     onAddCapsule({
       content: content.trim(),
       tags,
-      type: "text", // 只支持文本类型
     })
 
     // Reset form

@@ -6,8 +6,6 @@ export interface CapsuleSearchResult {
     content: string
     tags: string[]
     timestamp: number
-    type: "text" | "voice"
-    audio_url?: string | null
     created_at: string
   }>
   totalCount: number
@@ -18,8 +16,6 @@ interface CapsuleRow {
   content: string
   tags: string[]
   timestamp: number
-  type: "text" | "voice"
-  audio_url?: string | null
   created_at: string
 }
 
@@ -125,7 +121,6 @@ export async function createCapsule(content: string, tags: string[] = []): Promi
   const newCapsule = {
     content: content.trim(),
     tags: Array.isArray(tags) ? tags : [],
-    type: "text" as const,
     timestamp: Date.now(),
   }
 
