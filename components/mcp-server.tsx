@@ -23,7 +23,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
     return "https://your-domain.vercel.app"
   }
 
-  const mcpUrl = `${getCurrentDomain()}/api/server`
+  const mcpUrl = `${getCurrentDomain()}/api/mcp`
 
   // Cursor配置
   const cursorConfig = {
@@ -48,13 +48,8 @@ export default function MCPServer({ capsules }: MCPServerProps) {
 
   const mcpTools = [
     {
-      name: "search_capsules_by_tags",
-      description: "按标签搜索胶囊",
-      icon: "🏷️",
-    },
-    {
-      name: "search_capsules_by_content",
-      description: "按内容搜索胶囊",
+      name: "search_capsules",
+      description: "搜索灵感胶囊",
       icon: "🔍",
     },
     {
@@ -139,7 +134,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
     <div className="p-4 md:p-6">
       <div className="mb-4 md:mb-6 text-center">
         <h2 className="text-xl md:text-2xl font-semibold text-white mb-2">MCP服务器</h2>
-        <p className="text-white/60 text-xs md:text-sm">使用Vercel MCP适配器连接你的知识宇宙</p>
+        <p className="text-white/60 text-xs md:text-sm">Next.js App Router MCP实现</p>
       </div>
 
       {/* MCP Endpoint */}
@@ -167,7 +162,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
             </div>
             <div>
               <h3 className="font-semibold text-white text-sm md:text-base">Iris MCP服务器</h3>
-              <p className="text-white/60 text-xs md:text-sm">Vercel MCP Adapter</p>
+              <p className="text-white/60 text-xs md:text-sm">Next.js App Router</p>
             </div>
           </div>
           <Badge className="bg-green-500/20 text-green-400 border-green-400/30 text-xs">运行中</Badge>
@@ -183,7 +178,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
             <div className="text-white/60 text-xs md:text-sm">标签</div>
           </div>
           <div className="bg-white/5 rounded-xl p-3">
-            <div className="text-lg md:text-2xl font-bold text-white">5</div>
+            <div className="text-lg md:text-2xl font-bold text-white">4</div>
             <div className="text-white/60 text-xs md:text-sm">工具</div>
           </div>
           <div className="bg-white/5 rounded-xl p-3">
@@ -286,7 +281,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
             </div>
             <div>
               <p className="text-white font-medium text-sm md:text-base">重启应用</p>
-              <p className="text-white/70 text-xs md:text-sm">重启后即可使用5个工具</p>
+              <p className="text-white/70 text-xs md:text-sm">重启后即可使用4个工具</p>
             </div>
           </div>
         </div>

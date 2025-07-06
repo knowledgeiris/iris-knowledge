@@ -1,11 +1,12 @@
-# Iris Inner Cosmo - Vercel MCP Server
+# Iris Inner Cosmo - Next.js MCP Server
 
-## 🌟 Quick Setup Guide
+## 🌟 MCP Server Implementation
 
-### 1. MCP Server Configuration
+Built with **Next.js App Router** following Vercel's recommended patterns.
 
-Your MCP server is ready at: `/api/server`
-Built with **@vercel/mcp-adapter** for optimal performance.
+### 1. MCP Endpoint
+
+Your MCP server is available at: `/api/mcp`
 
 ### 2. Cursor Configuration
 
@@ -15,7 +16,7 @@ Add this to your Cursor MCP settings:
 {
   "mcpServers": {
     "iris-inner-cosmo": {
-      "url": "https://your-domain.vercel.app/api/server"
+      "url": "https://your-domain.vercel.app/api/mcp"
     }
   }
 }
@@ -23,30 +24,26 @@ Add this to your Cursor MCP settings:
 
 ### 3. Available Tools
 
-- 🏷️ **search_capsules_by_tags** - 按标签搜索胶囊
-- 🔍 **search_capsules_by_content** - 按内容搜索胶囊
-- ⏰ **get_recent_capsules** - 获取最近的胶囊
-- ✨ **create_capsule** - 创建新的灵感胶囊
-- 📊 **get_capsule_stats** - 查看知识库统计
+- 🔍 **search_capsules** - Search your knowledge base
+- ⏰ **get_recent_capsules** - Get recent inspirations  
+- ✨ **create_capsule** - Add new capsules during chat
+- 📊 **get_capsule_stats** - View statistics
 
-### 4. Features
+### 4. Implementation Details
 
-- ✅ Vercel MCP Adapter integration
-- ✅ Zod schema validation
-- ✅ Pagination support
-- ✅ Comprehensive error handling
+- ✅ Next.js 14 App Router
+- ✅ JSON-RPC 2.0 protocol compliance
+- ✅ Proper error handling
+- ✅ CORS support
 - ✅ TypeScript support
-- ✅ Service layer architecture
+- ✅ Direct Supabase integration
 
-### 5. Troubleshooting
+### 5. Testing
 
-If tools don't load in Cursor:
+1. **GET /api/mcp** - Returns server info and available tools
+2. **POST /api/mcp** - Handles MCP protocol messages
+3. **OPTIONS /api/mcp** - CORS preflight support
 
-1. **Check the endpoint**: Visit `/api/server` to verify server status
-2. **Verify configuration**: Ensure the URL is correct in Cursor settings
-3. **Restart Cursor**: Close and reopen Cursor after configuration changes
-4. **Check logs**: Monitor Vercel function logs for any errors
+## 🚀 Ready for AI Integration!
 
-## 🚀 Your Knowledge Universe Awaits!
-
-Your Iris Inner Cosmo is now powered by Vercel's MCP adapter for seamless AI integration!
+Your knowledge universe is now accessible through the Model Context Protocol!
