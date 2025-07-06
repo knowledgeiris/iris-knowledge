@@ -262,7 +262,7 @@ async function handleGetRecentCapsules(args: any) {
     const date = new Date(capsule.timestamp).toLocaleDateString()
     const time = new Date(capsule.timestamp).toLocaleTimeString()
     const tags = capsule.tags?.length > 0 ? capsule.tags.map((tag: string) => `#${tag}`).join(" ") : "No tags"
-    const icon = capsule.type === "voice" ? "🎤" : "📝"
+    const icon = "📝"
 
     return `${icon} **${capsule.content}**
 🏷️ ${tags}
@@ -292,7 +292,6 @@ async function handleCreateCapsule(args: any) {
   const newCapsule = {
     content: content.trim(),
     tags: Array.isArray(tags) ? tags : [],
-    type: "text",
     timestamp: Date.now(),
   }
 
