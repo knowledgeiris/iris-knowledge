@@ -23,7 +23,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
     return "https://your-domain.vercel.app"
   }
 
-  const mcpUrl = `${getCurrentDomain()}/api/mcp`
+  const mcpUrl = `${getCurrentDomain()}/api/server`
 
   // Cursor配置
   const cursorConfig = {
@@ -167,7 +167,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
             </div>
             <div>
               <h3 className="font-semibold text-white text-sm md:text-base">Iris MCP服务器</h3>
-              <p className="text-white/60 text-xs md:text-sm">基于MCP Framework</p>
+              <p className="text-white/60 text-xs md:text-sm">Vercel API Routes</p>
             </div>
           </div>
           <Badge className="bg-green-500/20 text-green-400 border-green-400/30 text-xs">运行中</Badge>

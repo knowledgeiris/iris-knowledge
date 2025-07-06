@@ -1,4 +1,4 @@
-import { type NextRequest, NextResponse } from "next/server"
+import type { NextApiRequest, NextApiResponse } from "next"
 import { supabaseAdmin } from "@/lib/supabase-server"
 
 // MCP工具定义
@@ -314,156 +314,159 @@ const TOOL_HANDLERS: Record<string, (args: any) => Promise<any>> = {
   get_capsule_stats: executeGetCapsuleStats,
 }
 
-// 处理MCP请求 - 严格按照MCP规范
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json()
-    console.log("📥 MCP Request:", JSON.stringify(body, null, 2))
+// 主处理函数
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // 设置CORS头
+  res.setHeader("Access-Control-Allow-Origin", "*")
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-    // 验证JSON-RPC 2.0格式
-    if (!body.jsonrpc || body.jsonrpc !== "2.0") {
-      return NextResponse.json({
-        jsonrpc: "2.0",
-        id: body.id || null,
-        error: {
-          code: -32600,
-          message: "Invalid Request - must be JSON-RPC 2.0",
-        },
-      })
-    }
+  // 处理OPTIONS请求
+  if (req.method === "OPTIONS") {
+    return res.status(200).end()
+  }
 
-    // 处理不同的MCP方法
-    switch (body.method) {
-      case "initialize":
-        console.log("🚀 Handling initialize request")
-        return NextResponse.json({
+  // 处理GET请求 - 返回服务器信息
+  if (req.method === "GET") {
+    return res.status(200).json({
+      name: "iris-inner-cosmo",
+      version: "1.0.0",
+      description: "MCP Server for Iris Inner Cosmo knowledge management",
+      protocolVersion: "2024-11-05",
+      capabilities: {
+        tools: {},
+      },
+      tools: MCP_TOOLS.map((tool) => ({
+        name: tool.name,
+        description: tool.description,
+      })),
+      status: "ready",
+      endpoint: "/api/server",
+    })
+  }
+
+  // 处理POST请求 - MCP协议
+  if (req.method === "POST") {
+    try {
+      const body = req.body
+      console.log("📥 MCP Request:", JSON.stringify(body, null, 2))
+
+      // 验证JSON-RPC 2.0格式
+      if (!body.jsonrpc || body.jsonrpc !== "2.0") {
+        return res.status(400).json({
           jsonrpc: "2.0",
-          id: body.id,
-          result: {
-            protocolVersion: "2024-11-05",
-            capabilities: {
-              tools: {},
-            },
-            serverInfo: {
-              name: "iris-inner-cosmo",
-              version: "1.0.0",
-            },
+          id: body.id || null,
+          error: {
+            code: -32600,
+            message: "Invalid Request - must be JSON-RPC 2.0",
           },
         })
+      }
 
-      case "tools/list":
-        console.log("🔧 Handling tools/list request")
-        return NextResponse.json({
-          jsonrpc: "2.0",
-          id: body.id,
-          result: {
-            tools: MCP_TOOLS,
-          },
-        })
-
-      case "tools/call":
-        console.log("⚡ Handling tools/call request")
-        const { name, arguments: args } = body.params || {}
-
-        if (!name) {
-          return NextResponse.json({
+      // 处理不同的MCP方法
+      switch (body.method) {
+        case "initialize":
+          console.log("🚀 Handling initialize request")
+          return res.status(200).json({
             jsonrpc: "2.0",
             id: body.id,
-            error: {
-              code: -32602,
-              message: "Invalid params - tool name is required",
+            result: {
+              protocolVersion: "2024-11-05",
+              capabilities: {
+                tools: {},
+              },
+              serverInfo: {
+                name: "iris-inner-cosmo",
+                version: "1.0.0",
+              },
             },
           })
-        }
 
-        const handler = TOOL_HANDLERS[name]
-        if (!handler) {
-          return NextResponse.json({
+        case "tools/list":
+          console.log("🔧 Handling tools/list request")
+          return res.status(200).json({
+            jsonrpc: "2.0",
+            id: body.id,
+            result: {
+              tools: MCP_TOOLS,
+            },
+          })
+
+        case "tools/call":
+          console.log("⚡ Handling tools/call request")
+          const { name, arguments: args } = body.params || {}
+
+          if (!name) {
+            return res.status(400).json({
+              jsonrpc: "2.0",
+              id: body.id,
+              error: {
+                code: -32602,
+                message: "Invalid params - tool name is required",
+              },
+            })
+          }
+
+          const handler = TOOL_HANDLERS[name]
+          if (!handler) {
+            return res.status(404).json({
+              jsonrpc: "2.0",
+              id: body.id,
+              error: {
+                code: -32601,
+                message: `Unknown tool: ${name}`,
+              },
+            })
+          }
+
+          try {
+            const result = await handler(args || {})
+            console.log("✅ Tool execution result:", JSON.stringify(result, null, 2))
+
+            return res.status(200).json({
+              jsonrpc: "2.0",
+              id: body.id,
+              result,
+            })
+          } catch (error: any) {
+            console.error("❌ Tool execution error:", error)
+            return res.status(500).json({
+              jsonrpc: "2.0",
+              id: body.id,
+              error: {
+                code: -32603,
+                message: `Error executing ${name}: ${error.message}`,
+              },
+            })
+          }
+
+        default:
+          console.log("❓ Unknown method:", body.method)
+          return res.status(404).json({
             jsonrpc: "2.0",
             id: body.id,
             error: {
               code: -32601,
-              message: `Unknown tool: ${name}`,
+              message: `Method not found: ${body.method}`,
             },
           })
-        }
-
-        try {
-          const result = await handler(args || {})
-          console.log("✅ Tool execution result:", JSON.stringify(result, null, 2))
-
-          return NextResponse.json({
-            jsonrpc: "2.0",
-            id: body.id,
-            result,
-          })
-        } catch (error) {
-          console.error("❌ Tool execution error:", error)
-          return NextResponse.json({
-            jsonrpc: "2.0",
-            id: body.id,
-            error: {
-              code: -32603,
-              message: `Error executing ${name}: ${error.message}`,
-            },
-          })
-        }
-
-      default:
-        console.log("❓ Unknown method:", body.method)
-        return NextResponse.json({
-          jsonrpc: "2.0",
-          id: body.id,
-          error: {
-            code: -32601,
-            message: `Method not found: ${body.method}`,
-          },
-        })
-    }
-  } catch (error) {
-    console.error("💥 MCP API Error:", error)
-    return NextResponse.json(
-      {
+      }
+    } catch (error: any) {
+      console.error("💥 MCP API Error:", error)
+      return res.status(500).json({
         jsonrpc: "2.0",
         id: null,
         error: {
           code: -32700,
           message: "Parse error",
         },
-      },
-      { status: 500 },
-    )
+      })
+    }
   }
-}
 
-// 处理GET请求 - 返回服务器信息
-export async function GET() {
-  return NextResponse.json({
-    name: "iris-inner-cosmo",
-    version: "1.0.0",
-    description: "MCP Server for Iris Inner Cosmo knowledge management",
-    protocolVersion: "2024-11-05",
-    capabilities: {
-      tools: {},
-    },
-    tools: MCP_TOOLS.map((tool) => ({
-      name: tool.name,
-      description: tool.description,
-    })),
-    status: "ready",
-    endpoint: "/api/mcp",
-  })
-}
-
-// 处理OPTIONS请求 - CORS支持
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Max-Age": "86400",
-    },
+  // 不支持的方法
+  return res.status(405).json({
+    error: "Method not allowed",
+    allowed: ["GET", "POST", "OPTIONS"],
   })
 }

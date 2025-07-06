@@ -4,7 +4,7 @@
 
 ### 1. MCP Server Configuration
 
-Your MCP server is ready at: `/api/mcp`
+Your MCP server is ready at: `/api/server`
 
 ### 2. Cursor Configuration
 
@@ -14,7 +14,7 @@ Add this to your Cursor MCP settings:
 {
   "mcpServers": {
     "iris-inner-cosmo": {
-      "url": "https://your-domain.vercel.app/api/mcp"
+      "url": "https://your-domain.vercel.app/api/server"
     }
   }
 }
@@ -32,7 +32,7 @@ Add this to your Cursor MCP settings:
 
 If tools don't load in Cursor:
 
-1. **Check the endpoint**: Visit `/api/mcp` to verify server status
+1. **Check the endpoint**: Visit `/api/server` to verify server status
 2. **Verify configuration**: Ensure the URL is correct in Cursor settings
 3. **Restart Cursor**: Close and reopen Cursor after configuration changes
 4. **Check logs**: Monitor browser console for any errors
@@ -45,6 +45,7 @@ The server implements:
 - ✅ Proper error handling
 - ✅ CORS support
 - ✅ Protocol version 2024-11-05
+- ✅ Vercel API Routes compatibility
 
 ## 🚀 Your Knowledge Universe Awaits!
 
