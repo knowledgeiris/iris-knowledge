@@ -13,6 +13,16 @@ export interface CapsuleSearchResult {
   totalCount: number
 }
 
+interface CapsuleRow {
+  id: string
+  content: string
+  tags: string[]
+  timestamp: number
+  type: "text" | "voice"
+  audio_url?: string | null
+  created_at: string
+}
+
 // 按标签搜索胶囊
 export async function searchCapsulesByTags(tags: string[], page = 1, pageSize = 10): Promise<CapsuleSearchResult> {
   if (!tags || tags.length === 0) {
@@ -107,7 +117,7 @@ export async function getRecentCapsules(limit = 5, days?: number): Promise<Capsu
 }
 
 // 创建新胶囊
-export async function createCapsule(content: string, tags: string[] = []): Promise<any> {
+export async function createCapsule(content: string, tags: string[] = []): Promise<CapsuleRow> {
   if (!content || content.trim().length === 0) {
     throw new Error("Content is required and must be a non-empty string")
   }
@@ -145,15 +155,15 @@ export async function getCapsuleStats(): Promise<{
   const totalCapsules = data.length
   const allTags = new Map<string, number>()
 
-  data.forEach((capsule) => {
+  data.forEach((capsule: CapsuleRow) => {
     capsule.tags.forEach((tag: string) => {
       allTags.set(tag, (allTags.get(tag) || 0) + 1)
     })
   })
 
   const uniqueTags = allTags.size
-  const recentCapsules = data.filter((c) => c.timestamp > Date.now() - 7 * 24 * 60 * 60 * 1000).length
-  const thisMonthCapsules = data.filter((c) => c.timestamp > Date.now() - 30 * 24 * 60 * 60 * 1000).length
+  const recentCapsules = data.filter((c: CapsuleRow) => c.timestamp > Date.now() - 7 * 24 * 60 * 60 * 1000).length
+  const thisMonthCapsules = data.filter((c: CapsuleRow) => c.timestamp > Date.now() - 30 * 24 * 60 * 60 * 1000).length
 
   const topTags = Array.from(allTags.entries())
     .sort((a, b) => b[1] - a[1])
