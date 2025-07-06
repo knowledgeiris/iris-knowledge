@@ -11,17 +11,18 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "latest",
     "@supabase/supabase-js": "latest",
+    "@vercel/mcp-adapter": "latest",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "latest",
+    "dotenv": "latest",
     "lucide-react": "^0.454.0",
-    "mcp-framework": "^1.0.0",
     "next": "14.2.16",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss": "^3.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
@@ -31,6 +32,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.0",
     "postcss": "^8.5",
+    "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
 }

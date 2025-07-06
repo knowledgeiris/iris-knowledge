@@ -48,19 +48,19 @@ export default function MCPServer({ capsules }: MCPServerProps) {
 
   const mcpTools = [
     {
-      name: "search_capsules",
-      description: "搜索灵感胶囊",
+      name: "search_capsules_by_tags",
+      description: "按标签搜索胶囊",
+      icon: "🏷️",
+    },
+    {
+      name: "search_capsules_by_content",
+      description: "按内容搜索胶囊",
       icon: "🔍",
     },
     {
       name: "get_recent_capsules",
       description: "获取最近的胶囊",
       icon: "⏰",
-    },
-    {
-      name: "get_capsules_by_tag",
-      description: "按标签查找胶囊",
-      icon: "🏷️",
     },
     {
       name: "create_capsule",
@@ -139,7 +139,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
     <div className="p-4 md:p-6">
       <div className="mb-4 md:mb-6 text-center">
         <h2 className="text-xl md:text-2xl font-semibold text-white mb-2">MCP服务器</h2>
-        <p className="text-white/60 text-xs md:text-sm">连接你的知识宇宙到AI助手</p>
+        <p className="text-white/60 text-xs md:text-sm">使用Vercel MCP适配器连接你的知识宇宙</p>
       </div>
 
       {/* MCP Endpoint */}
@@ -167,7 +167,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
             </div>
             <div>
               <h3 className="font-semibold text-white text-sm md:text-base">Iris MCP服务器</h3>
-              <p className="text-white/60 text-xs md:text-sm">Vercel API Routes</p>
+              <p className="text-white/60 text-xs md:text-sm">Vercel MCP Adapter</p>
             </div>
           </div>
           <Badge className="bg-green-500/20 text-green-400 border-green-400/30 text-xs">运行中</Badge>
