@@ -1,4 +1,4 @@
-# Iris Inner Cosmo - Next.js MCP Server
+# Iris's KnowledgeMesh - Next.js MCP Server
 
 ## 🌟 MCP Server Implementation
 
@@ -6,7 +6,7 @@ Built with **Next.js App Router** following Vercel's recommended patterns.
 
 ### 1. MCP Endpoint
 
-Your MCP server is available at: `/api/mcp`
+Your MCP server is available at: `https://v0-iris-inner-cosmo-app.vercel.app/api/mcp`
 
 ### 2. Cursor Configuration
 
@@ -15,8 +15,8 @@ Add this to your Cursor MCP settings:
 \`\`\`json
 {
   "mcpServers": {
-    "iris-inner-cosmo": {
-      "url": "https://your-domain.vercel.app/api/mcp"
+    "iris": {
+      "url": "https://v0-iris-inner-cosmo-app.vercel.app/api/mcp"
     }
   }
 }
@@ -24,10 +24,10 @@ Add this to your Cursor MCP settings:
 
 ### 3. Available Tools
 
-- 🔍 **search_capsules** - Search your knowledge base
+- 🔍 **search_capsules** - Search your knowledge mesh
 - ⏰ **get_recent_capsules** - Get recent inspirations  
 - ✨ **create_capsule** - Add new capsules during chat
-- 📊 **get_capsule_stats** - View statistics
+- 📊 **get_capsule_stats** - View mesh statistics
 
 ### 4. Implementation Details
 
@@ -46,4 +46,4 @@ Add this to your Cursor MCP settings:
 
 ## 🚀 Ready for AI Integration!
 
-Your knowledge universe is now accessible through the Model Context Protocol!
+Your knowledge mesh is now accessible through the Model Context Protocol!

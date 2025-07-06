@@ -239,7 +239,7 @@ export default function HomePage() {
         {/* Header */}
         <div className="text-center mb-6 md:mb-8">
           <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Iris's Inner Cosmo
+            Iris's KnowledgeMesh
           </h1>
           <p className="text-white/70 text-xs md:text-sm">Capture • Organize • Deploy Your Knowledge Universe</p>
 

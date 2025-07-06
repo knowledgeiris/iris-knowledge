@@ -4,9 +4,9 @@ import { supabaseAdmin } from "@/lib/supabase-server"
 // MCP Server Implementation for Next.js App Router
 export async function GET() {
   return Response.json({
-    name: "iris-inner-cosmo",
+    name: "iris",
     version: "1.0.0",
-    description: "MCP Server for Iris Inner Cosmo knowledge management",
+    description: "MCP Server for Iris KnowledgeMesh knowledge management",
     capabilities: {
       tools: {},
     },
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
               tools: {},
             },
             serverInfo: {
-              name: "iris-inner-cosmo",
+              name: "iris",
               version: "1.0.0",
             },
           },
@@ -313,7 +313,7 @@ async function handleCreateCapsule(args: any) {
 🆔 **ID:** ${data.id}
 📅 **Created:** ${new Date(data.timestamp).toLocaleString()}
 
-🌟 Your inspiration has been captured in the cosmos! 🚀`,
+🌟 Your inspiration has been captured in the knowledge mesh! 🚀`,
       },
     ],
   }
@@ -347,7 +347,7 @@ async function handleGetCapsuleStats() {
     content: [
       {
         type: "text",
-        text: `📊 **Iris Inner Cosmo Statistics**
+        text: `📊 **Iris KnowledgeMesh Statistics**
 
 🌟 **Total Capsules:** ${totalCapsules}
 🏷️ **Unique Tags:** ${uniqueTags}
@@ -357,7 +357,7 @@ async function handleGetCapsuleStats() {
 🔥 **Top Tags:**
 ${topTags.map(([tag, count]) => `   #${tag} (${count} capsules)`).join("\n")}
 
-✨ Your knowledge universe is expanding! Keep capturing those inspirations! 🌌`,
+✨ Your knowledge mesh is expanding! Keep capturing those inspirations! 🌌`,
       },
     ],
   }

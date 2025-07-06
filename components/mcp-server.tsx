@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Copy, Server, CheckCircle, Link } from "lucide-react"
+import { Copy, Server, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import type { Capsule } from "@/app/page"
@@ -12,24 +12,13 @@ interface MCPServerProps {
 
 export default function MCPServer({ capsules }: MCPServerProps) {
   const [copied, setCopied] = useState(false)
-  const [copiedUrl, setCopiedUrl] = useState(false)
   const [configType, setConfigType] = useState<"cursor" | "claude">("cursor")
-
-  // 获取当前域名
-  const getCurrentDomain = () => {
-    if (typeof window !== "undefined") {
-      return window.location.origin
-    }
-    return "https://your-domain.vercel.app"
-  }
-
-  const mcpUrl = `${getCurrentDomain()}/api/mcp`
 
   // Cursor配置
   const cursorConfig = {
     mcpServers: {
-      "iris-inner-cosmo": {
-        url: mcpUrl,
+      iris: {
+        url: "https://v0-iris-inner-cosmo-app.vercel.app/api/mcp",
       },
     },
   }
@@ -37,10 +26,10 @@ export default function MCPServer({ capsules }: MCPServerProps) {
   // Claude Desktop配置
   const claudeDesktopConfig = {
     mcpServers: {
-      "iris-inner-cosmo": {
+      iris: {
         transport: {
           type: "http",
-          url: mcpUrl,
+          url: "https://v0-iris-inner-cosmo-app.vercel.app/api/mcp",
         },
       },
     },
@@ -94,29 +83,6 @@ export default function MCPServer({ capsules }: MCPServerProps) {
     }
   }
 
-  const copyUrl = async () => {
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(mcpUrl)
-      } else {
-        const textArea = document.createElement("textarea")
-        textArea.value = mcpUrl
-        textArea.style.position = "fixed"
-        textArea.style.left = "-999999px"
-        textArea.style.top = "-999999px"
-        document.body.appendChild(textArea)
-        textArea.focus()
-        textArea.select()
-        document.execCommand("copy")
-        textArea.remove()
-      }
-      setCopiedUrl(true)
-      setTimeout(() => setCopiedUrl(false), 2000)
-    } catch (error) {
-      console.error("Failed to copy:", error)
-    }
-  }
-
   const getAllTags = () => {
     const tags = new Set<string>()
     capsules.forEach((capsule) => {
@@ -133,24 +99,8 @@ export default function MCPServer({ capsules }: MCPServerProps) {
   return (
     <div className="p-4 md:p-6">
       <div className="mb-4 md:mb-6 text-center">
-        <h2 className="text-xl md:text-2xl font-semibold text-white mb-2">MCP服务器</h2>
-        <p className="text-white/60 text-xs md:text-sm">Next.js App Router MCP实现</p>
-      </div>
-
-      {/* MCP Endpoint */}
-      <div className="backdrop-blur-md bg-white/10 rounded-xl md:rounded-2xl p-4 md:p-5 border border-white/20 mb-4 md:mb-6">
-        <div className="flex items-center space-x-2 mb-3">
-          <Link className="w-5 h-5 text-blue-400" />
-          <h3 className="font-semibold text-blue-400 text-sm md:text-base">MCP端点</h3>
-        </div>
-        <div className="bg-white/10 rounded-lg p-3 border border-white/20">
-          <div className="flex items-center justify-between">
-            <code className="text-blue-400 text-xs md:text-sm font-mono break-all">{mcpUrl}</code>
-            <Button onClick={copyUrl} variant="ghost" size="sm" className="text-white/50 hover:text-white ml-2">
-              {copiedUrl ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            </Button>
-          </div>
-        </div>
+        <h2 className="text-xl md:text-2xl font-semibold text-white mb-2">Iris MCP</h2>
+        <p className="text-white/60 text-xs md:text-sm">Model Context Protocol Server</p>
       </div>
 
       {/* Server Status */}
