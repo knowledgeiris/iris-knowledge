@@ -52,6 +52,10 @@ ${formattedCapsules.length > 0 ? formattedCapsules.join("\n\n---\n\n") : "没有
         }
       }
     },
+    {
+      description: "根据标签数组搜索相关的知识胶囊。适用于用户想查找某一主题下的所有内容时",
+      usage: "当用户输入了一个或多个标签，想要获取与这些标签相关的所有胶囊时使用。例如：'查找Iris mcp中所有与标签”trading“相关的内容'。"
+    }
   )
 
   // 按内容搜索胶囊
@@ -95,6 +99,10 @@ ${formattedCapsules.length > 0 ? formattedCapsules.join("\n\n---\n\n") : "没有
         }
       }
     },
+    {
+      description: "根据内容关键词搜索相关的知识胶囊。适用于用户想查找某一关键词下的所有内容时",
+      usage: "当用户输入了关键词，想要获取与这些关键词相关的所有胶囊内容时使用。例如：'查找Iris mcp中所有“AI”相关的内容'。"
+    }
   )
 
   // 获取最近的胶囊

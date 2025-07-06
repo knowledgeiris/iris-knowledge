@@ -1,9 +1,9 @@
 import { createClient } from "@supabase/supabase-js"
 
 const config = {
-  url: process.env.NEXT_PUBLIC_SUPABASE_URL || "https://yqmayjqtmluwgpxalskg.supabase.co",
+  url: process.env.NEXT_PUBLIC_SUPABASE_URL || "https://pquftfsfztnzgssztebs.supabase.co",
   anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxbWF5anF0bWx1d2dweGFsc2tnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2ODU4OTgsImV4cCI6MjA2NzI2MTg5OH0.U86sLB4YngY301czArY1Nrf7p9KM_kdrcrdlS8xJ_Nc"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxdWZ0ZnNmenRuemdzc3p0ZWJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3MjEzMTEsImV4cCI6MjA2NzI5NzMxMX0.Ufgk3l8Qus9i61SAFWNtoJPt9udu6Vu9MGoLkGiBiv0"
 }
 
 // 单例客户端实例
