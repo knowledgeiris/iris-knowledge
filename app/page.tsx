@@ -295,7 +295,7 @@ export default function HomePage() {
       </div>
 
       {/* Main container */}
-      <div className="relative z-10 container mx-auto px-3 py-4 md:px-4 md:py-6 max-w-4xl">
+      <div className="relative z-10 container mx-auto px-3 py-4 md:px-4 md:py-6 max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
         {/* Header */}
         <div className="text-center mb-6 md:mb-8">
           <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -323,7 +323,7 @@ export default function HomePage() {
 
         {/* Navigation */}
         <div className="flex justify-center mb-6 md:mb-8">
-          <div className="backdrop-blur-md bg-white/10 rounded-full p-1 border border-white/20 w-full max-w-md">
+          <div className="backdrop-blur-md bg-white/10 rounded-full p-1 border border-white/20 w-full max-w-md lg:max-w-lg">
             <div className="grid grid-cols-4 gap-1">
               <Button
                 variant={currentView === "capture" ? "default" : "ghost"}
