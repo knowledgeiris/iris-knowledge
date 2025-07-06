@@ -6,7 +6,7 @@ Built with **Next.js App Router** following Vercel's recommended patterns.
 
 ### 1. MCP Endpoint
 
-Your MCP server is available at: `https://v0-iris-inner-cosmo-app.vercel.app/api/mcp`
+Your MCP server is available at: `https://iris-knowledge.vercel.app/api/mcp`
 
 ### 2. Cursor Configuration
 
@@ -16,7 +16,7 @@ Add this to your Cursor MCP settings:
 {
   "mcpServers": {
     "iris": {
-      "url": "https://v0-iris-inner-cosmo-app.vercel.app/api/mcp"
+      "url": "https://iris-knowledge.vercel.app/api/mcp"
     }
   }
 }

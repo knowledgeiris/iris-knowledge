@@ -209,6 +209,55 @@ export default function HomePage() {
     })
   }
 
+  const updateCapsule = async (capsuleId: string, updates: { content?: string, tags?: string[] }) => {
+    try {
+      // 找到要更新的胶囊
+      const capsuleIndex = capsules.findIndex((c) => c.id === capsuleId)
+      if (capsuleIndex === -1) return
+
+      // 创建更新后的胶囊
+      const updatedCapsule = {
+        ...capsules[capsuleIndex],
+        ...updates,
+      }
+
+      // 乐观更新UI
+      const updatedCapsules = [...capsules]
+      updatedCapsules[capsuleIndex] = updatedCapsule
+      setCapsules(updatedCapsules)
+
+      // 更新localStorage
+      localStorage.setItem("iris-capsules", JSON.stringify(updatedCapsules))
+
+      // 尝试保存到数据库
+      const isConnected = await checkConnection()
+      if (isConnected) {
+        await capsuleOperations.update(capsuleId, updates)
+      } else {
+        console.warn("数据库未连接，只保存到本地")
+      }
+
+      // 显示成功提示
+      addToast({
+        title: "Capsule updated",
+        description: "Your inspiration has been updated in the cosmos",
+        duration: 2000,
+        onClose: () => {},
+      })
+
+    } catch (error) {
+      console.error("更新胶囊时出错:", error)
+      
+      // 显示错误提示
+      addToast({
+        title: "Update failed",
+        description: "Failed to update your capsule. Please try again.",
+        duration: 2000,
+        onClose: () => {},
+      })
+    }
+  }
+
   const getAllTags = () => {
     const tags = new Set<string>()
     capsules.forEach((capsule) => {
@@ -372,7 +421,13 @@ export default function HomePage() {
         <div className="backdrop-blur-md bg-white/5 rounded-2xl md:rounded-3xl border border-white/20 overflow-hidden">
           {currentView === "capture" && <CaptureEngine onAddCapsule={addCapsule} />}
 
-          {currentView === "stream" && <CapsuleStream capsules={filteredCapsules} onDeleteCapsule={deleteCapsule} />}
+          {currentView === "stream" && (
+            <CapsuleStream 
+              capsules={filteredCapsules} 
+              onDeleteCapsule={deleteCapsule}
+              onUpdateCapsule={updateCapsule} 
+            />
+          )}
 
           {currentView === "galaxy" && <GalaxyView capsules={filteredCapsules} onDeleteCapsule={deleteCapsule} />}
 

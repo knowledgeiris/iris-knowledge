@@ -18,7 +18,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
   const cursorConfig = {
     mcpServers: {
       iris: {
-        url: "https://v0-iris-inner-cosmo-app.vercel.app/api/mcp",
+        url: "https://iris-knowledge.vercel.app/api/mcp",
       },
     },
   }
@@ -29,7 +29,7 @@ export default function MCPServer({ capsules }: MCPServerProps) {
       iris: {
         transport: {
           type: "http",
-          url: "https://v0-iris-inner-cosmo-app.vercel.app/api/mcp",
+          url: "https://iris-knowledge.vercel.app/api/mcp",
         },
       },
     },

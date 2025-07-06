@@ -93,6 +93,33 @@ export const capsuleOperations = {
     }
   },
 
+  // 更新胶囊
+  async update(id: string, updates: {
+    content?: string
+    tags?: string[]
+  }) {
+    console.log("更新胶囊:", id, updates);
+    try {
+      const { data, error } = await supabase
+        .from("capsules")
+        .update(updates)
+        .eq("id", id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("更新胶囊错误:", error.message, error.code, error.details);
+        throw error;
+      }
+      
+      console.log("胶囊更新成功:", data);
+      return data;
+    } catch (error) {
+      console.error("更新胶囊异常:", error);
+      throw error;
+    }
+  },
+
   // 删除胶囊
   async delete(id: string) {
     console.log("删除胶囊:", id);
