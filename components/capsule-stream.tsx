@@ -1,7 +1,8 @@
 "use client"
 
+import { useState } from "react"
 import { formatDistanceToNow } from "date-fns"
-import { Volume2, Hash, Clock, Trash2 } from "lucide-react"
+import { Hash, Clock, Trash2, ChevronDown, ChevronUp } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import type { Capsule } from "@/app/page"
@@ -12,6 +13,27 @@ interface CapsuleStreamProps {
 }
 
 export default function CapsuleStream({ capsules, onDeleteCapsule }: CapsuleStreamProps) {
+  // 添加一个状态来跟踪哪些卡片是展开的
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({})
+
+  // 切换卡片展开状态
+  const toggleCardExpansion = (cardId: string) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [cardId]: !prev[cardId]
+    }))
+  }
+
+  // 格式化内容，将文本中的换行符转换为 <br> 标签
+  const formatContent = (content: string) => {
+    return content.split('\n').map((line, i) => (
+      <span key={i}>
+        {line}
+        {i < content.split('\n').length - 1 && <br />}
+      </span>
+    ))
+  }
+
   if (capsules.length === 0) {
     return (
       <div className="p-8 md:p-12 text-center">
@@ -50,11 +72,6 @@ export default function CapsuleStream({ capsules, onDeleteCapsule }: CapsuleStre
             {/* Header */}
             <div className="flex items-center justify-between mb-3 pr-8">
               <div className="flex items-center space-x-2">
-                {capsule.type === "voice" && (
-                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-red-500/20 flex items-center justify-center">
-                    <Volume2 className="w-3 h-3 md:w-4 md:h-4 text-red-400" />
-                  </div>
-                )}
                 <div className="flex items-center text-white/60 text-xs md:text-sm">
                   <Clock className="w-3 h-3 mr-1" />
                   {formatDistanceToNow(new Date(capsule.timestamp), { addSuffix: true })}
@@ -65,14 +82,34 @@ export default function CapsuleStream({ capsules, onDeleteCapsule }: CapsuleStre
             {/* Content */}
             <div className="mb-3 md:mb-4">
               {capsule.content && (
-                <p className="text-white leading-relaxed mb-3 text-sm md:text-base">{capsule.content}</p>
-              )}
-
-              {capsule.audio_url && (
-                <div className="bg-white/5 rounded-xl p-3 border border-white/10">
-                  <audio controls className="w-full h-8">
-                    <source src={capsule.audio_url} type="audio/wav" />
-                  </audio>
+                <div className="text-white leading-relaxed mb-3 text-sm md:text-base">
+                  {expandedCards[capsule.id] ? (
+                    // 完整内容，保留格式
+                    <div className="whitespace-pre-line">{formatContent(capsule.content)}</div>
+                  ) : (
+                    // 缩略内容，只显示前 100 个字符
+                    <div>
+                      {capsule.content.length > 100 
+                        ? formatContent(capsule.content.substring(0, 100) + "...") 
+                        : formatContent(capsule.content)}
+                    </div>
+                  )}
+                  
+                  {/* 展开/收起按钮，仅在内容超过 100 个字符时显示 */}
+                  {capsule.content.length > 100 && (
+                    <Button
+                      onClick={() => toggleCardExpansion(capsule.id)}
+                      size="sm"
+                      variant="ghost"
+                      className="mt-2 text-white/50 hover:text-white hover:bg-white/10 text-xs flex items-center"
+                    >
+                      {expandedCards[capsule.id] ? (
+                        <>Show less <ChevronUp className="ml-1 w-3 h-3" /></>
+                      ) : (
+                        <>Show more <ChevronDown className="ml-1 w-3 h-3" /></>
+                      )}
+                    </Button>
+                  )}
                 </div>
               )}
             </div>
